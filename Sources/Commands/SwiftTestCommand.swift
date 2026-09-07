@@ -1122,7 +1122,7 @@ public struct SwiftTestCommand: AsyncSwiftCommand {
         case .lcov:
             formatArgs = ["--format=lcov"]
         case .html:
-            preconditionFailure("exportCodeCov does not support the .html format; use generateHtmlCoverageReport instead.")
+            fatalError("exportCodeCov does not support the .html format; use generateHtmlCoverageReport instead.")
 
         }
 
@@ -1415,11 +1415,8 @@ extension SwiftTestCommand {
                     outputPath = defaultPath
                 }
 
-            case .json:
-                outputPath = codeCovBaseDir.appending(component: rootManifestName + ".json")
-
-            case .lcov:
-                outputPath = codeCovBaseDir.appending(component: rootManifestName + ".lcov")
+        case .json, .lcov:
+            outputPath = codeCovBaseDir.appending(component: rootManifestName + ".\(format.rawValue.lowercased())")
         }
         return outputPath
     }

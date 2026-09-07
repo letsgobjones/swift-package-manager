@@ -312,9 +312,14 @@ struct CoverageTests {
     }
 
     @Test(
-        .bug("https://github.com/swiftlang/swift-package-manager/issues/9198", "Add lcov coverage report format"),
-        arguments: SupportedBuildSystemOnAllPlatforms,
+            .issue(
+                "https://github.com/swiftlang/swift-package-manager/issues/9198",
+                relationship: .verifies,
+                comment: "Add lcov coverage report format",
+            ),
+            arguments: SupportedBuildSystemOnAllPlatforms,
     )
+
     func lcovReportHasValidTraceFileStructure(
         buildSystem: BuildSystemProvider.Kind,
     ) async throws {
