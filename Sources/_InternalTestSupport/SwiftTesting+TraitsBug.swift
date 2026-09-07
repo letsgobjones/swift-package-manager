@@ -35,6 +35,7 @@ extension Trait where Self == Testing.Bug {
             bug(nil, id: 0, "\(relationship): \(issue)")
         }
     }
+    
     public static var IssueWindowsRelativePathAssert: Self {
         // TSCBasic/Path.swift:969: Assertion failed
         issue(
