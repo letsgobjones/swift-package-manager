@@ -442,7 +442,7 @@ struct XcovArgumentCollectionTests {
                 try #require(XcovArgument(argument: "html=first.html")),
                 try #require(XcovArgument(argument: "json=second.json")),
                 try #require(XcovArgument(argument: "plain.txt")),  // No format
-                try #require(XcovArgument(argument: "lcov=unsupported2.lcov")),
+                try #require(XcovArgument(argument: "clover=unsupported2.clover")),
                 try #require(XcovArgument(argument: "html=second.html"))
             ]
 
@@ -457,7 +457,7 @@ struct XcovArgumentCollectionTests {
                 "xml=unsupported1.xml", // unsupported format
                 "second.json",          // json format
                 "plain.txt",            // no format specified
-                "lcov=unsupported2.lcov" // unsupported format
+                "clover=unsupported2.clover" // unsupported format
             ])
 
             // When: Getting arguments for html format
@@ -468,7 +468,7 @@ struct XcovArgumentCollectionTests {
                 "xml=unsupported1.xml", // unsupported format
                 "first.html",           // html format
                 "plain.txt",            // no format specified
-                "lcov=unsupported2.lcov", // unsupported format
+                "clover=unsupported2.clover", // unsupported format
                 "second.html"           // html format
             ])
         }
@@ -541,7 +541,7 @@ struct XcovArgumentCollectionTests {
         let args = [
             try #require(XcovArgument(argument: "json=./coverage/coverage.json")),
             try #require(XcovArgument(argument: "html=./coverage/html-report")),
-            try #require(XcovArgument(argument: "lcov=./coverage/lcov.info")),  // Unsupported
+            try #require(XcovArgument(argument: "clover=./coverage/clover.info")),  // Unsupported
             try #require(XcovArgument(argument: "./coverage/summary.txt")),     // No format
             try #require(XcovArgument(argument: "xml=./coverage/cobertura.xml")), // Unsupported
             try #require(XcovArgument(argument: "html=--coverage-watermark=80,20")),
@@ -555,7 +555,7 @@ struct XcovArgumentCollectionTests {
         let jsonResult = collection.getArguments(for: .json)
         #expect(jsonResult == [
             "./coverage/coverage.json",      // json format
-            "lcov=./coverage/lcov.info",    // unsupported
+            "clover=./coverage/clover.info",    // unsupported
             "./coverage/summary.txt",       // no format
             "xml=./coverage/cobertura.xml", // unsupported
         ])
@@ -564,7 +564,7 @@ struct XcovArgumentCollectionTests {
         let htmlResult = collection.getArguments(for: .html)
         #expect(htmlResult == [
             "./coverage/html-report",       // html format
-            "lcov=./coverage/lcov.info",    // unsupported
+            "clover=./coverage/clover.info",    // unsupported
             "./coverage/summary.txt",       // no format
             "xml=./coverage/cobertura.xml", // unsupported
             "--coverage-watermark=80,20",

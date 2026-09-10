@@ -193,20 +193,20 @@ struct SwiftTestIntegrationTests {
                     commandLineArgs: [
                         "-Xcov", "json=./build/coverage.json",
                         "-Xcov", "html=./build/coverage-report",
-                        "-Xcov", "lcov=./build/coverage.lcov",  // Unsupported
+                        "-Xcov", "clover=./build/coverage.clover",  // Unsupported
                         "-Xcov", "exclude-paths=/tmp/*",        // Generic flag (no leading dashes)
                         "-Xcov", "xml=./build/cobertura.xml",   // Unsupported
                     ],
                     expectedXcovArgumentCount: 5,
                     expectedJsonArgs: [
                         "./build/coverage.json",
-                        "lcov=./build/coverage.lcov",
+                        "clover=./build/coverage.clover",
                         "exclude-paths=/tmp/*",
                         "xml=./build/cobertura.xml"
                     ],
                     expectedHtmlArgs: [
                         "./build/coverage-report",
-                        "lcov=./build/coverage.lcov",
+                        "clover=./build/coverage.clover",
                         "exclude-paths=/tmp/*",
                         "xml=./build/cobertura.xml"
                     ],
