@@ -168,11 +168,10 @@ struct XcovArgumentTests {
                 expectedValue: "/path/with_underscores/file.html",
             ),
             ParsingTestData(
-                // Unsupported format with unicode
                 category: .complexFilePath,
                 argumentUT: "lcov=/path/with/unicode/файл.lcov",
-                expectedFormat: nil,
-                expectedValue: "lcov=/path/with/unicode/файл.lcov",
+                expectedFormat: .lcov,
+                expectedValue: "/path/with/unicode/файл.lcov",
             ),
             ParsingTestData(
                 category: .realWorldScenario,
@@ -238,8 +237,8 @@ struct XcovArgumentTests {
             ParsingTestData(
                 category: .realWorldScenario,
                 argumentUT: "lcov=coverage.lcov",
-                expectedFormat: nil,
-                expectedValue: "lcov=coverage.lcov",
+                expectedFormat: .lcov,
+                expectedValue: "coverage.lcov",
             ),
             ParsingTestData(
                 category: .realWorldScenario,
@@ -277,6 +276,7 @@ struct XcovArgumentTests {
                 expectedFormat: .html,
                 expectedValue: "--title=\"my title\"",
             ),
+
         ],
     )
     func parsingArgumentReturnsExpectedValue(
@@ -370,9 +370,11 @@ struct XcovArgumentCollectionTests {
             let jsonArg1 = try #require(XcovArgument(argument: "json=output1.json"))
             let htmlArg = try #require(XcovArgument(argument: "html=output.html"))
             let jsonArg2 = try #require(XcovArgument(argument: "json=output2.json"))
+            let lcovArg1 = try #require(XcovArgument(argument: "lcov=output1.lcov"))
+            let lcovArg2 = try #require(XcovArgument(argument: "lcov=output2.lcov"))
             let unsupportedArg = try #require(XcovArgument(argument: "xml=output.xml"))
 
-            let collection = XcovArgumentCollection([jsonArg1, htmlArg, jsonArg2, unsupportedArg])
+            let collection = XcovArgumentCollection([jsonArg1, htmlArg, jsonArg2, lcovArg1, lcovArg2, unsupportedArg])
 
             // When: Getting arguments for json format
             let jsonResult = collection.getArguments(for: .json)
@@ -385,6 +387,12 @@ struct XcovArgumentCollectionTests {
 
             // Then: Should return only html values plus unsupported format values
             #expect(htmlResult == ["output.html", "xml=output.xml"])
+
+            // When Getting arguments from lcov format
+            let lcovResult = collection.getArguments(for: .lcov)
+
+            // Then: Should return only lcov values plus unsupported format values
+            #expect(lcovResult == ["output1.lcov", "output2.lcov", "xml=output.xml"])
         }
 
         @Test("Empty collection returns empty results")
@@ -405,7 +413,7 @@ struct XcovArgumentCollectionTests {
         func collectionWithOnlyUnsupportedFormats() throws {
             // Given: Collection with only unsupported formats
             let arg1 = try #require(XcovArgument(argument: "xml=file1.xml"))
-            let arg2 = try #require(XcovArgument(argument: "lcov=file2.lcov"))
+            let arg2 = try #require(XcovArgument(argument: "clover=file2.clover"))
             let arg3 = try #require(XcovArgument(argument: "cobertura=file3.xml"))
 
             let collection = XcovArgumentCollection([arg1, arg2, arg3])
@@ -413,10 +421,12 @@ struct XcovArgumentCollectionTests {
             // When: Getting arguments for supported formats
             let jsonResult = collection.getArguments(for: .json)
             let htmlResult = collection.getArguments(for: .html)
+            let lcovResult = collection.getArguments(for: .lcov)
 
             // Then: Should return all unsupported format values
-            #expect(jsonResult == ["xml=file1.xml", "lcov=file2.lcov", "cobertura=file3.xml"])
-            #expect(htmlResult == ["xml=file1.xml", "lcov=file2.lcov", "cobertura=file3.xml"])
+            #expect(jsonResult == ["xml=file1.xml", "clover=file2.clover", "cobertura=file3.xml"])
+            #expect(htmlResult == ["xml=file1.xml", "clover=file2.clover", "cobertura=file3.xml"])
+            #expect(lcovResult == ["xml=file1.xml", "clover=file2.clover", "cobertura=file3.xml"])
         }
     }
 
